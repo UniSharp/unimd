@@ -1,3 +1,5 @@
+const webpack = require('webpack')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -14,6 +16,10 @@ module.exports = {
     ]
   },
   /*
+  ** Css
+  */
+  css: ['~/node_modules/bootstrap/dist/css/bootstrap.css', '~/node_modules/bootstrap/dist/css/bootstrap-theme.css'],
+  /*
   ** Customize the progress-bar color
   */
   loading: { color: '#3B8070' },
@@ -21,6 +27,15 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    vendor: ['jquery', 'bootstrap', 'vue-codemirror'],
+    plugins: [
+      // set shortcuts as global for bootstrap
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery'
+      })
+    ],
     /*
     ** Run ESLINT on save
     */
@@ -34,5 +49,8 @@ module.exports = {
         })
       }
     }
-  }
+  },
+  plugins: [
+    { src: '~/plugins/vue-codemirror', ssr: false }
+  ]
 }
