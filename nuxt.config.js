@@ -18,7 +18,10 @@ module.exports = {
   /*
   ** Css
   */
-  css: ['~/node_modules/bootstrap/dist/css/bootstrap.css', '~/node_modules/bootstrap/dist/css/bootstrap-theme.css'],
+  css: [
+    '~/node_modules/bootstrap/dist/css/bootstrap.css',
+    '~/node_modules/bootstrap/dist/css/bootstrap-theme.css'
+  ],
   /*
   ** Customize the progress-bar color
   */
@@ -27,7 +30,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: ['jquery', 'bootstrap', 'vue-codemirror'],
+    vendor: ['jquery', 'bootstrap'],
     plugins: [
       // set shortcuts as global for bootstrap
       new webpack.ProvidePlugin({

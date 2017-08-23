@@ -50,26 +50,26 @@
         <section id="work_space">
             <div id="text_block" :class="text_width">
                 <codemirror v-model="code" :options="editorOptions" ref="textEditor" @cursorActivity="showInfo"></codemirror>
-
-                <!-- footer start -->
-                <div class="configbar">
-                    <div class="cursor-info">
-                        Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
-                    </div>
-                    <div class="pull-right config-items">
-                        <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
-                        <div class="config-item"><a href="#"><i class="fa fa-sun-o"></i></a></div>
-
-                        <indent-switcher v-model="indentMode" @change="updateIndent"></indent-switcher>
-
-                        <key-binding v-model="keyMode" @change="updateKeyMap"></key-binding>
-
-                        <div class="config-item"><a href="#"><i class="fa fa-wrench"></i></a></div>
-                        <div class="config-item">Length: {{ chars_count }}</div>
-                    </div>
-                </div>
-                <!-- footer end -->
             </div>
+
+            <!-- footer start -->
+            <div class="configbar">
+                <div class="cursor-info">
+                    Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
+                </div>
+                <div class="pull-right config-items">
+                    <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
+                    <div class="config-item"><a href="#"><i class="fa fa-sun-o"></i></a></div>
+
+                    <indent-switcher v-model="indentMode" @change="updateIndent"></indent-switcher>
+
+                    <key-binding v-model="keyMode" @change="updateKeyMap"></key-binding>
+
+                    <div class="config-item"><a href="#"><i class="fa fa-wrench"></i></a></div>
+                    <div class="config-item">Length: {{ chars_count }}</div>
+                </div>
+            </div>
+            <!-- footer end -->
 
             <div id="view_block" :class="preview_width">{{ code }}</div>
         </section>
@@ -222,7 +222,6 @@
         color: white;
     }
     #work_space {
-        display: flex;
         flex-direction: row;
     }
 </style>
