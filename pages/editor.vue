@@ -1,58 +1,56 @@
 <template lang="pug">
-  section
-    .layout
-      .layout-header
-        Row
-          Col(span="12")
+  section.layout
+    .layout-header
+      Row
+        Col(span="12")
 
-            Button(type="text", icon="document", size="large") UniMD
+          Button(type="text", icon="document", size="large") UniMD
 
-            view-switcher(v-model="viewMode", @change="showMode")
+          view-switcher(v-model="viewMode", @change="showMode")
 
-            Button(type="text", icon="ios-help")
-            Button(type="text", icon="camera")
+          Button(type="text", icon="ios-help")
+          Button(type="text", icon="camera")
 
-          Col(span="12")
-            .setting-items
-              Button(type="text", icon="plus-round") 新增
+        Col(span="12")
+          .setting-items
+            Button(type="text", icon="plus-round") 新增
 
-              Button(type="text", icon="android-share-alt") 發表
+            Button(type="text", icon="android-share-alt") 發表
 
-              Dropdown(trigger="click")
-                Button(type="text", icon="arrow-down-b") 選單
-                Dropdown-menu(slot="list")
-                  Dropdown-item(disabled) 增益
-                  Dropdown-item 修訂版本
-                  Dropdown-item 簡報模式
-                  Dropdown-item(disabled, divided) 匯出
-                  Dropdown-item(disabled, divided) 匯入
-                  Dropdown-item Gist
-                  Dropdown-item 剪貼簿
-                  Dropdown-item(disabled, divided) 下載
-                  Dropdown-item Markdown
-                  Dropdown-item HTML
-                  Dropdown-item 純 HTML
-                  Dropdown-item PDF (Beta)
-                Button(type="info", icon="ios-people") 1 ONLINE
-      .layout-workspace
-        #text_block(:class="text_width")
-          .code-block
-            codemirror(v-model="code", :options="editorOptions", ref="textEditor", @cursorActivity="showInfo")
+            Dropdown(trigger="click")
+              Button(type="text", icon="arrow-down-b") 選單
+              Dropdown-menu(slot="list")
+                Dropdown-item(disabled) 增益
+                Dropdown-item 修訂版本
+                Dropdown-item 簡報模式
+                Dropdown-item(disabled, divided) 匯出
+                Dropdown-item(disabled, divided) 匯入
+                Dropdown-item Gist
+                Dropdown-item 剪貼簿
+                Dropdown-item(disabled, divided) 下載
+                Dropdown-item Markdown
+                Dropdown-item HTML
+                Dropdown-item 純 HTML
+                Dropdown-item PDF (Beta)
+              Button(type="info", icon="ios-people") 1 ONLINE
+    .layout-workspace
+      #text_block(:class="text_width")
+        .code-editor
+          codemirror(v-model="code", :options="editorOptions", ref="textEditor", @cursorActivity="showInfo")
 
-          .config-bar
-            Row
-              Col(span="12").cursor-info
-                span Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
-              Col(span="12")
-                .config-items
-                    .config-item: Button(type="text", icon="checkmark")
-                    .config-item: Button(type="text", icon="gear-a")
-                    indent-switcher(v-model="indentMode", @change="updateIndent")
-                    key-binding(v-model="keyMode", @change="updateKeyMap")
-                    .config-item: Button(type="text", icon="wrench")
-                    .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
-        #view_block(:class="preview_width") {{ code }}
-
+        .config-bar
+          Row
+            Col(span="12").cursor-info
+              span Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
+            Col(span="12")
+              .config-items
+                .config-item: Button(type="text", icon="checkmark")
+                .config-item: Button(type="text", icon="gear-a")
+                indent-switcher(v-model="indentMode", @change="updateIndent")
+                key-binding(v-model="keyMode", @change="updateKeyMap")
+                .config-item: Button(type="text", icon="wrench")
+                .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
+      #view_block(:class="preview_width") {{ code }}
 </template>
 
 <script>
@@ -83,7 +81,6 @@
     },
     computed: {
       text_width () {
-        console.log('sdfsd')
         if (this.viewMode === 'edit') {
           return 'full_width'
         } else if (this.viewMode === 'preview') {
@@ -144,64 +141,64 @@
 </script>
 
 <style>
-    .layout{
-        position: relative;
-    }
-    .layout-header{
-        background-color: white;
-        padding: 10px 0;
-        border: 1px solid #d3e0e9;
-    }
-    .layout-header .setting-items{
-        float: right;
-        margin-right: 15px;
-    }
-    .layout-header .ivu-btn{
-        font-size: 14px;
-    }
-    .layout-header .ivu-btn i.ivu-icon{
-        font-size: 18px;
-    }
-    .code-block{
-        background-color: #9ea7b4;
-    }
-    .CodeMirror {
-        height: calc(100vh - 50px - 2px - 20px - 10px);
-        background-color: #444;
-        color: white;
-    }
-    .full_width {
-        width: 100vw;
-    }
-    .half_width {
-        width: 50vw;
-    }
-    .hidden {
-        width: 0vw;
-    }
-    .config-bar{
-        background-color: #222;
-        color: white;
-        font-size: 8px;
-        border: 1px solid #666;
-        width: 100%;
-    }
-    .config-bar .cursor-info{
-        padding: 6px;
-    }
-    .config-bar .config-items{
-        float: right;
-        margin-right: 15px;
-        display: flex;
-    }
-    .config-bar .config-items .config-item button{
-        color: white;
-    }
-    .config-item.padding-6{
-        padding:6px;
-    }
+  .layout{
+    position: relative;
+  }
+  .layout-header{
+    background-color: white;
+    padding: 10px 0;
+    border: 1px solid #d3e0e9;
+  }
+  .layout-header .setting-items{
+    float: right;
+    margin-right: 15px;
+  }
+  .layout-header .ivu-btn{
+    font-size: 14px;
+  }
+  .layout-header .ivu-btn i.ivu-icon{
+    font-size: 18px;
+  }
+  .code-editor{
+    background-color: #9ea7b4;
+  }
+  .CodeMirror {
+    height: calc(100vh - 50px - 2px - 20px - 10px);
+    background-color: #444;
+    color: white;
+  }
+  .full_width {
+    width: 100vw;
+  }
+  .half_width {
+    width: 50vw;
+  }
+  .hidden {
+    width: 0vw;
+  }
+  .config-bar{
+    background-color: #222;
+    color: white;
+    font-size: 8px;
+    border: 1px solid #666;
+    width: 100%;
+  }
+  .config-bar .cursor-info{
+    padding: 6px;
+  }
+  .config-bar .config-items{
+    float: right;
+    margin-right: 15px;
+    display: flex;
+  }
+  .config-bar .config-items .config-item button{
+    color: white;
+  }
+  .config-item.padding-6{
+    padding:6px;
+  }
 
-    .layout-workspace {
-        display: flex;
-    }
+  .layout-workspace {
+    display: flex;
+  }
 </style>

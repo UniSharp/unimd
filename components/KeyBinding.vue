@@ -1,9 +1,9 @@
 <template lang="pug">
   .config-item
-    Dropdown(trigger="click", placement="top")
+    Dropdown(trigger="click", placement="top", @on-click="switchKeyMap")
       Button(type="text") {{ value }}
       Dropdown-menu(slot="list")
-        Dropdown-item(v-for="mode in modes", :key="mode", @click="switchKeyMap(mode)") {{ mode }}
+        Dropdown-item(v-for="mode in modes", :key="mode", :name="mode") {{ mode }}
 </template>
 
 <script>
