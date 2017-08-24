@@ -50,17 +50,20 @@
                 key-binding(v-model="keyMode", @change="updateKeyMap")
                 .config-item: Button(type="text", icon="wrench")
                 .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
-      #view_block(:class="preview_width") {{ code }}
+      #view_block(:class="preview_width")
+        view-container(:code="code")
+
 </template>
 
 <script>
   import ViewSwitcher from '~/components/ViewSwitcher'
   import IndentSwitcher from '~/components/IndentSwitcher'
   import KeyBinding from '~/components/KeyBinding'
+  import ViewContainer from '~/components/ViewContainer'
 
   export default {
     components: {
-      ViewSwitcher, IndentSwitcher, KeyBinding
+      ViewSwitcher, IndentSwitcher, KeyBinding, ViewContainer
     },
     methods: {
       showMode () {
@@ -140,7 +143,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   .layout{
     position: relative;
   }
@@ -148,20 +151,56 @@
     background-color: white;
     padding: 10px 0;
     border: 1px solid #d3e0e9;
+
+      .setting-items{
+        float: right;
+        margin-right: 15px;
+      }
+
+      .ivu-btn{
+        font-size: 14px;
+        i.ivu-icon{
+          font-size: 18px;
+        }
+      }
   }
-  .layout-header .setting-items{
-    float: right;
-    margin-right: 15px;
+
+  .layout-workspace{
+    display: flex;
+
+    .code-editor{
+      background-color: #9ea7b4;
+    }
+
+    .config-bar{
+      background-color: #222;
+      color: white;
+      font-size: 8px;
+      border: 1px solid #666;
+      width: 100%;
+
+      .cursor-info{
+          padding: 6px;
+      }
+
+      .config-items{
+        float: right;
+        margin-right: 15px;
+        display: flex;
+
+        .config-item {
+          border-left: 1px solid #666;
+          button{
+            color: white;
+          }
+          &.padding-6{
+            padding:6px;
+          }
+        }
+      }
+    }
   }
-  .layout-header .ivu-btn{
-    font-size: 14px;
-  }
-  .layout-header .ivu-btn i.ivu-icon{
-    font-size: 18px;
-  }
-  .code-editor{
-    background-color: #9ea7b4;
-  }
+
   .CodeMirror {
     height: calc(100vh - 59px - 2px - 32px);
     background-color: #444;
@@ -176,32 +215,5 @@
   .hidden {
     width: 0vw;
   }
-  .config-bar{
-    background-color: #222;
-    color: white;
-    font-size: 8px;
-    border: 1px solid #666;
-    width: 100%;
-  }
-  .config-bar .cursor-info{
-    padding: 6px;
-  }
-  .config-bar .config-items{
-    float: right;
-    margin-right: 15px;
-    display: flex;
-  }
-  .config-item {
-    border-left: 1px solid #666;
-  }
-  .config-bar .config-items .config-item button{
-    color: white;
-  }
-  .config-item.padding-6{
-    padding:6px;
-  }
 
-  .layout-workspace {
-    display: flex;
-  }
 </style>

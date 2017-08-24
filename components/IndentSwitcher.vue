@@ -40,7 +40,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .config-item{
     padding: 6px;
   }
