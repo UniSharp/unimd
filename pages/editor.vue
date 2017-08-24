@@ -1,90 +1,65 @@
-<template>
-    <div class="editor">
-        <!-- header start -->
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">
-                        <i class="fa fa-file-o"></i>
-                        &nbsp;UniMD
-                    </a>
+<template lang="pug">
+    section
+        .layout
+            .layout-header
+                Row
+                    Col(span="12")
 
-                    <view-switcher v-model="viewMode" @change="showMode"></view-switcher>
+                        Button(type="text", icon="document", size="large") UniMD
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><i class="fa fa-question-circle"></i></a></li>
-                        <li><a href="#"><i class="fa fa-camera"></i></a></li>
-                    </ul>
-                </div>
+                        view-switcher(v-model="viewMode", @change="showMode")
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><i class="fa fa-plus"></i> 新增</a></li>
-                    <li><a href="#"><i class="fa fa-share-alt"></i> 發表</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">選單 <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-header">增益</li>
-                            <li><a href="#"><i class="fa fa-history"></i> 修訂版本</a></li>
-                            <li><a href="#"><i class="fa fa-television"></i> 簡報模式</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">匯出</li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">匯入</li>
-                            <li><a href="#"><i class="fa fa-github"></i> Gist</a></li>
-                            <li><a href="#"><i class="fa fa-clipboard"></i> 剪貼簿</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">下載</li>
-                            <li><a href="#"><i class="fa fa-file-text"></i> Markdown</a></li>
-                            <li><a href="#"><i class="fa fa-code"></i> HTML</a></li>
-                            <li><a href="#"><i class="fa fa-code"></i> 純 HTML</a></li>
-                            <li><a href="#"><i class="fa fa-file-pdf-o"></i> PDF (Beta)</a></li>
-                        </ul>
-                    </li>
-                    <a href="#" class="btn btn-primary navbar-btn" id="online-btn"><i class="fa fa-users"></i> 1 ONLINE</a>
-                </ul>
-            </div>
-        </nav>
-        <!-- header end -->
+                        Button(type="text", icon="ios-help")
+                        Button(type="text", icon="camera")
 
-        <!-- body start -->
-        <section id="work_space">
-            <div id="text_block" :class="text_width">
-                <codemirror v-model="code" :options="editorOptions" ref="textEditor" @cursorActivity="showInfo"></codemirror>
-            </div>
+                    Col(span="12")
+                        .setting-items
+                            Button(type="text", icon="plus-round") 新增
 
-            <!-- footer start -->
-            <div class="configbar">
-                <div class="cursor-info">
-                    Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
-                </div>
-                <div class="pull-right config-items">
-                    <div class="config-item"><a href="#"><i class="fa fa-check"></i></a></div>
-                    <div class="config-item"><a href="#"><i class="fa fa-sun-o"></i></a></div>
+                            Button(type="text", icon="android-share-alt") 發表
 
-                    <indent-switcher v-model="indentMode" @change="updateIndent"></indent-switcher>
+                            Dropdown(trigger="click")
+                                Button(type="text", icon="arrow-down-b") 選單
+                                Dropdown-menu(slot="list")
+                                    Dropdown-item(disabled) 增益
+                                    Dropdown-item 修訂版本
+                                    Dropdown-item 簡報模式
+                                    Dropdown-item(disabled, divided) 匯出
+                                    Dropdown-item(disabled, divided) 匯入
+                                    Dropdown-item Gist
+                                    Dropdown-item 剪貼簿
+                                    Dropdown-item(disabled, divided) 下載
+                                    Dropdown-item Markdown
+                                    Dropdown-item HTML
+                                    Dropdown-item 純 HTML
+                                    Dropdown-item PDF (Beta)
+                                Button(type="info", icon="ios-people") 1 ONLINE
+            .layout-content
+                codemirror(v-model="code", :options="editorOptions", ref="textEditor", @cursorActivity="showInfo")
 
-                    <key-binding v-model="keyMode" @change="updateKeyMap"></key-binding>
+            .layout-footer
+                Row
+                    Col(span="12").cursor-info
+                        span Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
+                    Col(span="12")
+                        .config-items
+                            .config-item: Button(type="text", icon="checkmark")
+                            .config-item: Button(type="text", icon="gear-a")
+                            indent-switcher(v-model="indentMode", @change="updateIndent")
+                            key-binding(v-model="keyMode", @change="updateKeyMap")
+                            .config-item: Button(type="text", icon="wrench")
+                            .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
 
-                    <div class="config-item"><a href="#"><i class="fa fa-wrench"></i></a></div>
-                    <div class="config-item">Length: {{ chars_count }}</div>
-                </div>
-            </div>
-            <!-- footer end -->
-
-            <div id="view_block" :class="preview_width">{{ code }}</div>
-        </section>
-        <!-- body end -->
-    </div>
 </template>
 
 <script>
-  import KeyBinding from '~/components/KeyBinding'
   import ViewSwitcher from '~/components/ViewSwitcher'
   import IndentSwitcher from '~/components/IndentSwitcher'
+  import KeyBinding from '~/components/KeyBinding'
 
   export default {
     components: {
-      KeyBinding, ViewSwitcher, IndentSwitcher
+      ViewSwitcher, IndentSwitcher, KeyBinding
     },
     methods: {
       showMode () {
@@ -165,14 +140,26 @@
 </script>
 
 <style>
-    .navbar {
-        margin-bottom: 0px;
+    .layout{
+        position: relative;
     }
-    #online-btn {
-        margin-left: 20px;
-        margin-right: 20px;
-        text-transform: uppercase;
-        font-weight: bold;
+    .layout-header{
+        background-color: white;
+        padding: 10px 0;
+        border: 1px solid #d3e0e9;
+    }
+    .layout-header .setting-items{
+        float: right;
+        margin-right: 15px;
+    }
+    .layout-header .ivu-btn{
+        font-size: 14px;
+    }
+    .layout-header .ivu-btn i.ivu-icon{
+        font-size: 18px;
+    }
+    .layout-content{
+        background-color: #9ea7b4;
     }
     .CodeMirror {
         height: calc(100vh - 50px - 2px - 20px - 10px);
@@ -188,40 +175,25 @@
     .hidden {
         width: 0vw;
     }
-    .configbar {
+    .layout-footer{
         background-color: #222;
         color: white;
         font-size: 8px;
-        border-top: 1px solid #666;
+        border: 1px solid #666;
         width: 100%;
     }
-    .cursor-info {
-        padding: 5px 10px;
-        display: inline-block;
+    .layout-footer .cursor-info{
+        padding: 6px;
     }
-    .config-items {
+    .layout-footer .config-items{
+        float: right;
+        margin-right: 15px;
         display: flex;
-        flex-direction: row;
     }
-    .config-item {
-        cursor: pointer;
-        padding: 5px 10px;
-        border-left: 1px solid #666;
-    }
-    .config-item a {
+    .layout-footer .config-items .config-item button{
         color: white;
     }
-    .config-item a:hover {
-        text-decoration: none;
-    }
-    .config-item .dropdown-menu {
-        background-color: #222;
-        min-width: 0px;
-    }
-    .config-item .dropdown-menu > li > a {
-        color: white;
-    }
-    #work_space {
-        flex-direction: row;
+    .config-item.padding-6{
+        padding:6px;
     }
 </style>

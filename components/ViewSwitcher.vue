@@ -1,7 +1,6 @@
-<template>
-  <div class="btn-group navbar-btn" role="group" aria-label="...">
-    <a class="btn btn-default" @click="switchView(mode.name)" v-for="mode in modes"><i :class="'fa fa-' + mode.icon"></i></a>
-  </div>
+<template lang="pug">
+  Button-group
+    Button(v-for="mode in modes", :key="mode.name", type="ghost", :icon="mode.icon", @click="switchView(mode.name)", size="large")
 </template>
 
 <script>
@@ -18,11 +17,11 @@
           },
           {
             name: 'preview',
-            icon: 'columns'
+            icon: 'ios-book-outline'
           },
           {
             name: 'edit',
-            icon: 'pencil'
+            icon: 'edit'
           }
         ]
       }

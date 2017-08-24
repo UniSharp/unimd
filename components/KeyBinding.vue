@@ -1,12 +1,9 @@
-<template>
-  <div class="btn-group dropup config-item">
-    <a class="dropdown-toggle" data-toggle="dropdown">
-      {{ value }}
-    </a>
-    <ul class="dropdown-menu dropdown-menu-right">
-      <li v-for="mode in modes"><a href="#" @click="switchKeyMap(mode)">{{ mode }}</a></li>
-    </ul>
-  </div>
+<template lang="pug">
+  .config-item
+    Dropdown(trigger="click", placement="top")
+      Button(type="text") {{ value }}
+      Dropdown-menu(slot="list")
+        Dropdown-item(v-for="mode in modes", :key="mode", @click="switchKeyMap(mode)") {{ mode }}
 </template>
 
 <script>
@@ -28,8 +25,8 @@
   }
 </script>
 
-<style>
-  .dropup > a, .dropup > .dropdown-menu > li > a {
-    text-transform: capitalize;
+<style scoped>
+  button{
+    color: white;
   }
 </style>

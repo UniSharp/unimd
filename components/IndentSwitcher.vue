@@ -1,11 +1,10 @@
-<template>
-  <div class="config-item">
-    <span @click="switchIndent" v-if="value.useTab">Tab Size</span>
-    <span @click="switchIndent" v-if="!value.useTab">Spaces</span>
-    :&nbsp;
-    <span @click="startEditing" v-if="!is_editing">{{ value.spaces }}</span>
-    <input @blur="finishEditing" ref="spaces_count" :value="value.spaces" type="text">
-  </div>
+<template lang="pug">
+  .config-item
+    span(@click="switchIndent", v-if="value.useTab") Tab Size
+    span(@click="switchIndent" v-if="!value.useTab") Spaces
+    | :&nbsp;
+    span(@click="startEditing", v-if="!is_editing") {{ value.spaces }}
+    input(@blur="finishEditing", ref="spaces_count", :value="value.spaces", type="text")
 </template>
 
 <script>
@@ -41,8 +40,11 @@
   }
 </script>
 
-<style>
-  input {
+<style scoped>
+  .config-item{
+    padding: 6px;
+  }
+  input{
     width: 20px;
     border-radius: 3px;
     background-color: #222;

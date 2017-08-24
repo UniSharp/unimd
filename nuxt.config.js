@@ -20,7 +20,8 @@ module.exports = {
   */
   css: [
     '~/node_modules/bootstrap/dist/css/bootstrap.css',
-    '~/node_modules/bootstrap/dist/css/bootstrap-theme.css'
+    '~/node_modules/bootstrap/dist/css/bootstrap-theme.css',
+    '~/node_modules/iview/dist/styles/iview.css'
   ],
   /*
   ** Customize the progress-bar color
@@ -54,6 +55,7 @@ module.exports = {
     }
   },
   plugins: [
-    { src: '~/plugins/vue-codemirror', ssr: false }
+    { src: '~/plugins/vue-codemirror', ssr: false },
+    { src: '~/plugins/iview', ssr: false }
   ]
 }
