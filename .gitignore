@@ -12,7 +12,3 @@ dist
 
 # phpStorm
 .idea/*
-
-# esLint
-.editorconfig
-.eslintrc.js
