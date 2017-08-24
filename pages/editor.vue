@@ -163,7 +163,7 @@
     background-color: #9ea7b4;
   }
   .CodeMirror {
-    height: calc(100vh - 50px - 2px - 20px - 10px);
+    height: calc(100vh - 59px - 2px - 32px);
     background-color: #444;
     color: white;
   }
@@ -190,6 +190,9 @@
     float: right;
     margin-right: 15px;
     display: flex;
+  }
+  .config-item {
+    border-left: 1px solid #666;
   }
   .config-bar .config-items .config-item button{
     color: white;
