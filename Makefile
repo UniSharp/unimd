@@ -6,7 +6,7 @@ init:
 
 build:
 	# ./node_modules/.bin/gulp
-	yarn dev
+	yarn build
 
 watch:
-	yarn watch
+	yarn dev
