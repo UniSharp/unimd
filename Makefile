@@ -1,7 +1,8 @@
 project=$(shell basename `pwd`)
 
 
-init: yarn install
+init:
+	yarn install
 
 build:
 	# ./node_modules/.bin/gulp
