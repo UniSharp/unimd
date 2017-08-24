@@ -13,7 +13,6 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
     "iview": "^2.1.0",
     "jquery": "^3.2.1",
     "nuxt": "^1.0.0-rc3",

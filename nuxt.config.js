@@ -19,8 +19,6 @@ module.exports = {
   ** Css
   */
   css: [
-    '~/node_modules/bootstrap/dist/css/bootstrap.css',
-    '~/node_modules/bootstrap/dist/css/bootstrap-theme.css',
     '~/node_modules/iview/dist/styles/iview.css'
   ],
   /*
@@ -31,7 +29,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: ['jquery', 'bootstrap'],
+    vendor: ['jquery'],
     plugins: [
       // set shortcuts as global for bootstrap
       new webpack.ProvidePlugin({
