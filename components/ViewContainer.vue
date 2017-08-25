@@ -5,11 +5,15 @@
 </template>
 
 <script>
-  var md = require('markdown-it')({
+  import markdownModule from 'markdown-it'
+  import markdownItHightlight from 'markdown-it-highlightjs'
+  let md = markdownModule({
     html: true,
     linkify: true,
     typographer: true
   })
+
+  md.use(markdownItHightlight, {auto: true})
 
   export default {
     props: ['code'],

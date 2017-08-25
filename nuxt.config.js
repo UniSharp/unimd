@@ -19,7 +19,8 @@ module.exports = {
   ** Css
   */
   css: [
-    '~/node_modules/iview/dist/styles/iview.css'
+    'iview/dist/styles/iview.css',
+    'highlight.js/styles/googlecode.css'
   ],
   /*
   ** Customize the progress-bar color

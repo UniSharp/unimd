@@ -18,6 +18,7 @@
     "iview": "^2.1.0",
     "jquery": "^3.2.1",
     "markdown-it": "^8.3.2",
+    "markdown-it-highlightjs": "^3.0.0",
     "node-sass": "^4.5.3",
     "nuxt": "^1.0.0-rc6",
     "pug": "^2.0.0-rc.3",
