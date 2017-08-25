@@ -151,7 +151,7 @@
         },
         current_line: 1,
         current_column: 1,
-        code: 'Welcome to UniMD!\n\n## How we built this app:\n * Vue\n * Swoole\n * Laravel\n\n> Feel free to send pull requests!',
+        code: config.codemirror.code,
         editorOptions: {
           // codemirror options
           tabSize: 4,
@@ -188,6 +188,9 @@
     background-color: white;
     padding: 10px 0;
     border: 1px solid #d3e0e9;
+      .upload-image {
+        display: inline-block;
+      }
 
       .setting-items{
         float: right;
@@ -204,6 +207,11 @@
 
   .layout-workspace{
     display: flex;
+
+    #view_block{
+      height: calc(100vh - 59px - 2px - 32px);
+      overflow: scroll;
+    }
 
     .code-editor{
       background-color: #9ea7b4;
@@ -251,13 +259,5 @@
   }
   .hidden {
     width: 0vw;
-  }
-
-  .layout-workspace {
-    display: flex;
-  }
-
-  .upload-image {
-    display: inline-block;
   }
 </style>

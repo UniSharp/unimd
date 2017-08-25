@@ -1,7 +1,5 @@
 <template lang="pug">
-  div
-    h1.display-4 Hello World
-    .view-container(v-html="compiledMarkdown")
+  .view-container(v-html="compiledMarkdown")
 </template>
 
 <script>
