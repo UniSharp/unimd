@@ -131,7 +131,7 @@
         editor.on('change', function (editor, diff) {
           console.log('change')
           if (diff.origin && (diff.origin !== 'setValue')) {
-            this.changeSend(diff)
+            this.socket.emit('changeNote', { message: diff })
             let newDiff = dmp.patch_toText(dmp.patch_make(this.note, editor.getDoc().getValue()))
             this.diffSend(newDiff)
           }
