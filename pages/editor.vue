@@ -70,11 +70,17 @@
   import IndentSwitcher from '~/components/IndentSwitcher'
   import KeyBinding from '~/components/KeyBinding'
   import ViewContainer from '~/components/ViewContainer'
+
   import config from '~/config.json'
+  import UniSocket from '~/plugins/UniSocket.js'
+  import dmp from 'diff-match-patch'
 
   export default {
     components: {
       ViewSwitcher, IndentSwitcher, KeyBinding, ViewContainer
+    },
+    mounted () {
+      this.connectSocket()
     },
     methods: {
       showMode () {
@@ -113,6 +119,55 @@
           ch: cursor.ch
         }
         doc.replaceRange(`![](${response.data.link})\n`, from, to)
+      },
+      replaceRange (diff) {
+        this.$refs.textEditor.editor.replaceRange(diff.text, diff.from, diff.to)
+      },
+      connectSocket () {
+        let editor = this.$refs.textEditor.editor
+
+        this.socket = new UniSocket(config.websocket.endPoint)
+        this.socket.on('open', () => {})
+        editor.on('change', function (editor, diff) {
+          console.log('change')
+          if (diff.origin && (diff.origin !== 'setValue')) {
+            this.changeSend(diff)
+            let newDiff = dmp.patch_toText(dmp.patch_make(this.note, editor.getDoc().getValue()))
+            this.diffSend(newDiff)
+          }
+        })
+        this.socket.on('changeNote', (data) => {
+          this.replaceRange(data.message)
+        })
+        this.socket.on('getNote', (data) => {
+          if (data.message !== null) {
+            editor.getDoc().setValue(data.message)
+          }
+        })
+        this.socket.on('getDiff', (data) => {
+          let patch = dmp.patch_fromText(data.message)
+          let apply = dmp.patch_apply(patch, editor.getDoc().getValue())
+          editor.getDoc().setValue(apply[0])
+        })
+      },
+      getNote (noteId) {
+        console.log('getNote')
+        this.socket.emit('getNote', { note_id: noteId })
+      },
+      getDiff (data) {
+        console.log('getDiff')
+        let doc = this.$refs.textEditor.editor.getDoc()
+        let patch = dmp.patch_fromText(data.message)
+        let apply = dmp.patch_apply(patch, doc.getValue())
+        doc.setValue(apply[0])
+      },
+      diffSend (diff) {
+        console.log('diffNite')
+        this.socket.emit('diffNote', { message: diff })
+      },
+      changeSend (diff) {
+        console.log('changeSend')
+        this.socket.emit('changeNote', { message: diff })
       }
     },
     computed: {
@@ -143,6 +198,8 @@
     },
     data () {
       return {
+        note: '',
+        socket: null,
         viewMode: 'edit',
         keyMode: 'default',
         indentMode: {
