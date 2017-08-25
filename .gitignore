@@ -12,3 +12,6 @@ dist
 
 # phpStorm
 .idea/*
+
+# Config
+config.json

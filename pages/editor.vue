@@ -9,7 +9,17 @@
           view-switcher(v-model="viewMode", @change="showMode")
 
           Button(type="text", icon="ios-help")
-          Button(type="text", icon="camera")
+          Upload(
+            class="upload-image",
+            :headers="uploadImageHeader",
+            action="https://api.imgur.com/3/image",
+            name="image",
+            :show-upload-list="false",
+            :before-upload="handleBeforeUpload",
+            :on-success="handleUploadSuccess",
+            clearFiles
+          )
+            Button(type="text", icon="camera")
 
         Col(span="12")
           .setting-items
@@ -60,6 +70,7 @@
   import IndentSwitcher from '~/components/IndentSwitcher'
   import KeyBinding from '~/components/KeyBinding'
   import ViewContainer from '~/components/ViewContainer'
+  import config from '~/config.json'
 
   export default {
     components: {
@@ -80,6 +91,28 @@
       updateIndent () {
         this.editorOptions.indentWithTabs = this.indentMode.useTab
         this.editorOptions.tabSize = this.indentMode.spaces
+      },
+      handleBeforeUpload () {
+        let doc = this.$refs.textEditor.editor.doc
+        let cursor = this.$refs.textEditor.editor.getCursor()
+        let from = {
+          line: cursor.line,
+          ch: cursor.ch
+        }
+        doc.replaceRange(`${this.uploadMessage}`, from)
+      },
+      handleUploadSuccess (response) {
+        let doc = this.$refs.textEditor.editor.doc
+        let cursor = this.$refs.textEditor.editor.getCursor()
+        let from = {
+          line: cursor.line,
+          ch: cursor.ch - this.uploadMessage.length
+        }
+        let to = {
+          line: cursor.line,
+          ch: cursor.ch
+        }
+        doc.replaceRange(`![](${response.data.link})\n`, from, to)
       }
     },
     computed: {
@@ -137,7 +170,11 @@
           // highlightSelectionMatches: { showToken: /\w/, annotateScrollbar: true },
           // more codemirror config...
           // 如果有hint方面的配置，也应该出现在这里
-        }
+        },
+        uploadImageHeader: {
+          Authorization: `Client-ID ${config.imgur.clientID}`
+        },
+        uploadMessage: '![Uploading file...]()'
       }
     }
   }
@@ -216,4 +253,11 @@
     width: 0vw;
   }
 
+  .layout-workspace {
+    display: flex;
+  }
+
+  .upload-image {
+    display: inline-block;
+  }
 </style>
