@@ -124,7 +124,7 @@
           tabSize: 4,
           indentWithTabs: false,
           mode: 'text/x-markdown',
-          // theme: 'base16-dark',
+          theme: 'monokai',
           // // sublime、emacs、vim三种键位模式，支持你的不同操作习惯
           keyMap: 'default'
           // // 按键映射，比如Ctrl键映射autocomplete，autocomplete是hint代码提示事件
