@@ -44,7 +44,7 @@
                 Dropdown-item PDF (Beta)
               Button(type="info", icon="ios-people") 1 ONLINE
     .layout-workspace
-      #text_block(:class="text_width")
+      #text_block(:class="text_width", v-if="!isHidden(text_width)")
         .code-editor
           codemirror(v-model="code", :options="editorOptions", ref="textEditor", @cursorActivity="showInfo")
 
@@ -60,8 +60,8 @@
                 key-binding(v-model="keyMode", @change="updateKeyMap")
                 .config-item: Button(type="text", icon="wrench")
                 .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
-      #view_block(:class="preview_width")
-        view-container(:code="code")
+      #view_block(:class="preview_width", v-if="!isHidden(preview_width)")
+        view-container(:isHidden="isHidden(preview_width)", :source="code")
 
 </template>
 
@@ -168,6 +168,9 @@
       changeSend (diff) {
         console.log('changeSend')
         this.socket.emit('changeNote', { message: diff })
+      },
+      isHidden (width) {
+        return width === 'hidden'
       }
     },
     computed: {
