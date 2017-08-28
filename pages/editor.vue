@@ -146,7 +146,6 @@
         })
 
         editor.on('change', function (editor, diff) {
-          console.log('change')
           if (diff.origin && (diff.origin !== 'setValue')) {
             that.socket.emit('changeNote', { message: diff })
             let newDiff = that.patchToText(that.patchMake(that.note, editor.getDoc().getValue()))
@@ -157,8 +156,10 @@
           this.replaceRange(data.message)
         })
         this.socket.on('getNote', (data) => {
+          let doc = this.$refs.textEditor.editor.getDoc()
           if (data.message !== null) {
-            this.updateTextArea(data.message)
+            this.note = data.message
+            doc.setValue(data.message)
           }
         })
         this.socket.on('getDiff', (data) => {
@@ -166,19 +167,15 @@
         })
       },
       getNote (noteId) {
-        console.log('getNote')
         this.socket.emit('getNote', { note_id: noteId })
       },
       getDiff (data) {
-        console.log('getDiff')
         this.updateTextArea(data.message)
       },
       diffSend (diff) {
-        console.log('diffNite')
         this.socket.emit('diffNote', { message: diff })
       },
       changeSend (diff) {
-        console.log('changeSend')
         this.socket.emit('changeNote', { message: diff })
       },
       isHidden (width) {
@@ -230,7 +227,7 @@
         },
         current_line: 1,
         current_column: 1,
-        code: config.codemirror.code,
+        code: '',
         editorOptions: {
           // codemirror options
           tabSize: 4,

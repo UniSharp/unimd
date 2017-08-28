@@ -3006,6 +3006,13 @@ js-beautify@^1.6.14:
     mkdirp "~0.5.0"
     nopt "~3.0.1"
 
+js-sequence-diagrams@^1000000.0.6:
+  version "1000000.0.6"
+  resolved "https://registry.yarnpkg.com/js-sequence-diagrams/-/js-sequence-diagrams-1000000.0.6.tgz#e95db01420479c5ccbc12046af1da42fde649e5c"
+  dependencies:
+    raphael "~2.1.x"
+    underscore "~1.4.x"
+
 js-stringify@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/js-stringify/-/js-stringify-1.0.2.tgz#1736fddfd9724f28a3682adc6230ae7e4e9679db"
