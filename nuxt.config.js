@@ -54,7 +54,7 @@ module.exports = {
     }
   },
   plugins: [
-    { src: '~/plugins/vue-codemirror', ssr: false },
-    { src: '~/plugins/iview', ssr: false }
+    { src: '~/plugins/VueCodemirror', ssr: false },
+    { src: '~/plugins/Iview', ssr: false }
   ]
 }
