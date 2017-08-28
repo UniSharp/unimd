@@ -73,7 +73,8 @@
 
   import config from '~/config.json'
   import UniSocket from '~/plugins/UniSocket.js'
-  import dmp from 'diff-match-patch'
+  import DiffMatchPatch from 'diff-match-patch'
+  var dmp = new DiffMatchPatch()
 
   export default {
     components: {
@@ -83,6 +84,18 @@
       this.connectSocket()
     },
     methods: {
+      patchFromText (args) {
+        return dmp.patch_fromText(args)
+      },
+      patchToText (args) {
+        return dmp.patch_toText(args)
+      },
+      patchMake (...args) {
+        return dmp.patch_make(...args)
+      },
+      patchApply (...args) {
+        return dmp.patch_apply(...args)
+      },
       showMode () {
         console.log('Current mode : ' + this.viewMode)
       },
@@ -125,15 +138,19 @@
       },
       connectSocket () {
         let editor = this.$refs.textEditor.editor
+        let that = this
 
         this.socket = new UniSocket(config.websocket.endPoint)
-        this.socket.on('open', () => {})
+        this.socket.on('open', () => {
+          that.getNote(that.noteId)
+        })
+
         editor.on('change', function (editor, diff) {
           console.log('change')
           if (diff.origin && (diff.origin !== 'setValue')) {
-            this.socket.emit('changeNote', { message: diff })
-            let newDiff = dmp.patch_toText(dmp.patch_make(this.note, editor.getDoc().getValue()))
-            this.diffSend(newDiff)
+            that.socket.emit('changeNote', { message: diff })
+            let newDiff = that.patchToText(that.patchMake(that.note, editor.getDoc().getValue()))
+            that.diffSend(newDiff)
           }
         })
         this.socket.on('changeNote', (data) => {
@@ -141,13 +158,11 @@
         })
         this.socket.on('getNote', (data) => {
           if (data.message !== null) {
-            editor.getDoc().setValue(data.message)
+            this.updateTextArea(data.message)
           }
         })
         this.socket.on('getDiff', (data) => {
-          let patch = dmp.patch_fromText(data.message)
-          let apply = dmp.patch_apply(patch, editor.getDoc().getValue())
-          editor.getDoc().setValue(apply[0])
+          this.updateTextArea(data.message)
         })
       },
       getNote (noteId) {
@@ -156,10 +171,7 @@
       },
       getDiff (data) {
         console.log('getDiff')
-        let doc = this.$refs.textEditor.editor.getDoc()
-        let patch = dmp.patch_fromText(data.message)
-        let apply = dmp.patch_apply(patch, doc.getValue())
-        doc.setValue(apply[0])
+        this.updateTextArea(data.message)
       },
       diffSend (diff) {
         console.log('diffNite')
@@ -171,6 +183,12 @@
       },
       isHidden (width) {
         return width === 'hidden'
+      },
+      updateTextArea (message) {
+        let doc = this.$refs.textEditor.editor.getDoc()
+        let patch = this.patchFromText(message)
+        let apply = this.patchApply(patch, doc.getValue())
+        doc.setValue(apply[0])
       }
     },
     computed: {
@@ -202,6 +220,7 @@
     data () {
       return {
         note: '',
+        noteId: 1,
         socket: null,
         viewMode: 'edit',
         keyMode: 'default',

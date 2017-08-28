@@ -13,6 +13,7 @@ class UniSocket {
 
   connect () {
     let events = this.events
+    let that = this
 
     this.socket = new WebSocket(this.wsUri)
     this.socket.onopen = function (ev) {
@@ -29,8 +30,8 @@ class UniSocket {
           console.log('Retry connection in : ' + seconds + ' seconds')
         })
         .complete(() => {
-          this.connect()
           console.log('restarting')
+          that.connect()
         })
         .start()
     }
