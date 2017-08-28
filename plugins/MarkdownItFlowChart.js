@@ -3,13 +3,20 @@ const wrap = render =>
     if (process.browser) {
       const flowchart = require('flowchart.js')
       let token = args[0][0]
-      if (token.info === 'flow' || token.info === 'flowchart') {
-        let id = `flowchart-${Math.random() * 100}`
-        Promise.resolve().then(() => {
-          flowchart.parse(token.content).drawSVG(id)
-        })
-        return `<div id='${id}'></div>`
+      let diagram = null
+      switch (token.info) {
+        case 'flow':
+        case 'flowchart':
+          diagram = flowchart.parse(token.content)
+          break
       }
+
+      let id = `diagram-${Math.random() * 100}`
+      // 這裡是故意異步的唷
+      Promise.resolve().then(() => {
+        diagram.drawSVG(id)
+      })
+      return `<div id='${id}'></div>`
     }
 
     return render.apply(this, args)
