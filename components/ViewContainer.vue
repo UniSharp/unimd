@@ -8,20 +8,23 @@
   import markdownModule from 'markdown-it'
   import markdownItHightlight from 'markdown-it-highlightjs'
   import markdownItTocAndAnchor from 'markdown-it-toc-and-anchor'
+  import markdownItFlowChart from '~/plugins/MarkdownItFlowChart'
   let md = markdownModule({
     html: true,
     linkify: true,
     typographer: true
   })
 
+  // sequence.Diagram()
   md.use(markdownItHightlight, {auto: true})
-  md.use(markdownItTocAndAnchor, {
-    tocClassName: 'markdown-toc-list',
-    anchorLink: false,
-    anchorLinkSymbol: '',
-    tocFirstLevel: 1,
-    tocLastLevel: 2
-  })
+    .use(markdownItTocAndAnchor, {
+      tocClassName: 'markdown-toc-list',
+      anchorLink: false,
+      anchorLinkSymbol: '',
+      tocFirstLevel: 1,
+      tocLastLevel: 2
+    })
+    .use(markdownItFlowChart)
 
   export default {
     props: ['source', 'isHidden'],

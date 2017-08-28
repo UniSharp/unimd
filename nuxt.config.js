@@ -30,7 +30,10 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: ['jquery'],
+    vendor: [
+      'jquery',
+      'flowchart.js'
+    ],
     plugins: [
       // set shortcuts as global for bootstrap
       new webpack.ProvidePlugin({
