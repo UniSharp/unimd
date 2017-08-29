@@ -46,7 +46,7 @@
     .layout-workspace
       #text_block(:class="text_width", v-if="!isHidden(text_width)")
         .code-editor
-          codemirror(v-model="code", :options="editorOptions", ref="textEditor", @cursorActivity="showInfo")
+          codemirror(@viewportChange="onEditorScroll", v-model="code", :options="editorOptions", ref="textEditor", @cursorActivity="showInfo")
 
         .config-bar
           Row
@@ -60,8 +60,8 @@
                 key-binding(v-model="keyMode", @change="updateKeyMap")
                 .config-item: Button(type="text", icon="wrench")
                 .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
-      #view_block(:class="preview_width", v-if="!isHidden(preview_width)")
-        view-container(:isHidden="isHidden(preview_width)", :source="code")
+      #view_block(:class="preview_width", v-if="!isHidden(preview_width)", @scroll="onViewScroll")
+        view-container(@scroll="onViewScroll", :isHidden="isHidden(preview_width)", :source="code")
 
 </template>
 
@@ -84,6 +84,16 @@
       this.connectSocket()
     },
     methods: {
+      onEditorScroll (e) {
+        if (e.doc && this.$el.querySelector('#view_block')) {
+          this.$el.querySelector('#view_block').scrollTop = e.doc.scrollTop
+        }
+      },
+      onViewScroll (e) {
+        window.CodeMirror.scrollTop = e.target.scrollTop
+        console.log(e.target.scrollTop)
+        this.$refs.textEditor.editor.scrollTo(null, e.target.scrollTop)
+      },
       patchFromText (args) {
         return dmp.patch_fromText(args)
       },
