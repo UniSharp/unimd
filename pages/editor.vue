@@ -91,7 +91,6 @@
       },
       onViewScroll (e) {
         window.CodeMirror.scrollTop = e.target.scrollTop
-        console.log(e.target.scrollTop)
         this.$refs.textEditor.editor.scrollTo(null, e.target.scrollTop)
       },
       patchFromText (args) {
