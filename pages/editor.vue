@@ -56,7 +56,7 @@
               .config-items
                 .config-item: Button(type="text", icon="checkmark")
                 .config-item: Button(type="text", icon="gear-a")
-                indent-switcher(v-model="indentMode", @change="updateIndent")
+                indent-switcher(v-model="indentMode")
                 key-binding(v-model="keyMode", @change="updateKeyMap")
                 .config-item: Button(type="text", icon="wrench")
                 .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
@@ -116,10 +116,6 @@
       showInfo (editor) {
         this.current_line = this.$refs.textEditor.editor.getCursor().line + 1
         this.current_column = this.$refs.textEditor.editor.getCursor().ch + 1
-      },
-      updateIndent () {
-        this.editorOptions.indentWithTabs = this.indentMode.useTab
-        this.editorOptions.tabSize = this.indentMode.spaces
       },
       handleBeforeUpload () {
         let doc = this.$refs.textEditor.editor.doc
@@ -208,6 +204,15 @@
           return 'hidden'
         }
       },
+      editorOptions () {
+        return {
+          tabSize: this.indentMode.spaces,
+          indentWithTabs: this.indentMode.useTab,
+          mode: 'text/x-markdown',
+          theme: 'monokai',
+          keyMap: 'default'
+        }
+      },
       preview_width () {
         if (this.viewMode === 'view') {
           return 'full_width'
@@ -238,25 +243,6 @@
         current_line: 1,
         current_column: 1,
         code: '',
-        editorOptions: {
-          // codemirror options
-          tabSize: 4,
-          indentWithTabs: false,
-          mode: 'text/x-markdown',
-          theme: 'monokai',
-          // // sublime、emacs、vim三种键位模式，支持你的不同操作习惯
-          keyMap: 'default'
-          // // 按键映射，比如Ctrl键映射autocomplete，autocomplete是hint代码提示事件
-          // extraKeys: { "Ctrl": "autocomplete" },
-          // // 代码折叠
-          // foldGutter: true,
-          // gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-          // // 选中文本自动高亮，及高亮方式
-          // styleSelectedText: true,
-          // highlightSelectionMatches: { showToken: /\w/, annotateScrollbar: true },
-          // more codemirror config...
-          // 如果有hint方面的配置，也应该出现在这里
-        },
         uploadImageHeader: {
           Authorization: `Client-ID ${config.imgur.clientID}`
         },
