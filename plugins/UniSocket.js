@@ -27,10 +27,10 @@ class UniSocket {
 
       new Timer(5)
         .countDown((seconds) => {
-          console.log('Retry connection in : ' + seconds + ' seconds')
+          debug('Retry connection in : ' + seconds + ' seconds')
         })
         .complete(() => {
-          console.log('restarting')
+          debug('restarting')
           that.connect()
         })
         .start()
@@ -44,7 +44,7 @@ class UniSocket {
   emit (eventName, data) {
     data['action'] = eventName
     this.socket.send(JSON.stringify(data))
-    console.log('Event emited : ' + eventName)
+    debug('Event emited : ' + eventName)
   }
 
   on (eventName, callback) {
