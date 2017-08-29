@@ -57,7 +57,7 @@
                 .config-item: Button(type="text", icon="checkmark")
                 .config-item: Button(type="text", icon="gear-a")
                 indent-switcher(v-model="indentMode")
-                key-binding(v-model="keyMode", @change="updateKeyMap")
+                key-binding(v-model="keyMode")
                 .config-item: Button(type="text", icon="wrench")
                 .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
       #view_block(:class="preview_width", v-if="!isHidden(preview_width)", @scroll="onViewScroll")
@@ -108,10 +108,6 @@
       },
       showMode () {
         debug('Current mode : ' + this.viewMode)
-      },
-      updateKeyMap () {
-        this.editorOptions.keyMap = this.keyMode
-        debug('Current key map : ' + this.keyMode)
       },
       showInfo (editor) {
         this.current_line = this.$refs.textEditor.editor.getCursor().line + 1
@@ -210,7 +206,7 @@
           indentWithTabs: this.indentMode.useTab,
           mode: 'text/x-markdown',
           theme: 'monokai',
-          keyMap: 'default'
+          keyMap: this.keyMode // TODO: it still got some bug when it change key map mode
         }
       },
       preview_width () {
