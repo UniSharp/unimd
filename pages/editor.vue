@@ -70,11 +70,12 @@
   import IndentSwitcher from '~/components/IndentSwitcher'
   import KeyBinding from '~/components/KeyBinding'
   import ViewContainer from '~/components/ViewContainer'
-
+  import debugModule from 'debug'
   import config from '~/config.json'
   import UniSocket from '~/plugins/UniSocket.js'
   import DiffMatchPatch from 'diff-match-patch'
-  var dmp = new DiffMatchPatch()
+  let dmp = new DiffMatchPatch()
+  let debug = debugModule('pages.editor')
 
   export default {
     components: {
@@ -106,11 +107,11 @@
         return dmp.patch_apply(...args)
       },
       showMode () {
-        console.log('Current mode : ' + this.viewMode)
+        debug('Current mode : ' + this.viewMode)
       },
       updateKeyMap () {
         this.editorOptions.keyMap = this.keyMode
-        console.log('Current key map : ' + this.keyMode)
+        debug('Current key map : ' + this.keyMode)
       },
       showInfo (editor) {
         this.current_line = this.$refs.textEditor.editor.getCursor().line + 1
