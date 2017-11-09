@@ -1,5 +1,5 @@
 <template lang="pug">
-  .config-item
+  .indent-switcher
     span(@click="switchIndent", v-if="value.useTab") Tab Size
     span(@click="switchIndent" v-if="!value.useTab") Spaces
     | :&nbsp;
@@ -42,7 +42,7 @@
 
 <style lang="scss" scoped>
   .config-item{
-    padding: 6px;
+    // padding: 6px;
   }
   input{
     width: 20px;

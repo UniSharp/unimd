@@ -1,75 +1,71 @@
 <template lang="pug">
-  section.layout
-    .layout-header
-      Row
-        Col(span="12")
-
-          Button(type="text", icon="document", size="large") UniMD
-
+  .wrapper
+    nav.navbar.navbar-expand.navbar-fix.navbar-light.bg-light
+      a.navbar-brand(href="#")
+        i.fa.fa-file-text.mr-2
+        | UniMD
+      ul.navbar-nav.mr-auto
+        li.nav-item
           view-switcher(v-model="viewMode", @change="showMode")
-
-          Button(type="text", icon="ios-help")
-          Upload(
-            class="upload-image",
-            :headers="uploadImageHeader",
-            action="https://api.imgur.com/3/image",
-            name="image",
-            :show-upload-list="false",
-            :before-upload="handleBeforeUpload",
-            :on-success="handleUploadSuccess",
-            clearFiles
-          )
-            Button(type="text", icon="camera")
-
-        Col(span="12")
-          .setting-items
-            Button(type="text", icon="plus-round") 新增
-
-            Button(type="text", icon="android-share-alt") 發表
-
-            Dropdown(trigger="click")
-              Button(type="text", icon="arrow-down-b") 選單
-              Dropdown-menu(slot="list")
-                Dropdown-item(disabled) 增益
-                Dropdown-item 修訂版本
-                Dropdown-item 簡報模式
-                Dropdown-item(disabled, divided) 匯出
-                Dropdown-item(disabled, divided) 匯入
-                Dropdown-item Gist
-                Dropdown-item 剪貼簿
-                Dropdown-item(disabled, divided) 下載
-                Dropdown-item Markdown
-                Dropdown-item HTML
-                Dropdown-item 純 HTML
-                Dropdown-item PDF (Beta)
-              Button(type="info", icon="ios-people") 1 ONLINE
-    .layout-workspace
-      #text_block(:class="text_width", v-if="!isHidden(text_width)")
-        .code-editor
+        li.nav-item
+          button.btn.bg-transparent(type="text")
+            i.fa.fa-camera
+        li.nav-item
+          button.btn.bg-transparent(type="text")
+            i.fa.fa-question-circle
+        //- Upload(
+        //-   class="upload-image",
+        //-   :headers="uploadImageHeader",
+        //-   action="https://api.imgur.com/3/image",
+        //-   name="image",
+        //-   :show-upload-list="false",
+        //-   :before-upload="handleBeforeUpload",
+        //-   :on-success="handleUploadSuccess",
+        //-   clearFiles
+        //- )
+        //-   Button(type="text", icon="camera")
+      ul.navbar-nav
+        li.nav-item
+          a.nav-link(href="#")
+            i.fa.fa-plus.mr-2
+            | 新增
+        li.nav-item
+          a.nav-link(href="#")
+            i.fa.fa-plus.mr-2
+            | 發表
+        b-nav-item-dropdown(text="選單")
+          b-dropdown-item(href="#") 選單項目1
+          b-dropdown-item(href="#") 選單項目2
+          b-dropdown-item(href="#") 選單項目3
+          b-dropdown-item(href="#") 選單項目4
+          b-dropdown-item(href="#") 選單項目5
+        li.nav-item.ml-2.d-flex.align-items-center
+          span.badge.badge-primary.m-0
+            i.fa.fa-users.mr-2
+            | 1 ONLINE
+    main
+      .editor-wrapper(v-if="viewMode !== 'preview'")
+        .editor
           codemirror(@viewportChange="onEditorScroll", v-model="code", :options="editorOptions", ref="textEditor", @cursorActivity="showInfo")
-
-        .config-bar
-          Row
-            Col(span="12").cursor-info
-              span Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
-            Col(span="12")
-              .config-items
-                .config-item: Button(type="text", icon="checkmark")
-                .config-item: Button(type="text", icon="gear-a")
-                indent-switcher(v-model="indentMode")
-                key-binding(v-model="keyMode")
-                .config-item: Button(type="text", icon="wrench")
-                .config-item.padding-6: span.padding-6 Length: {{ chars_count }}
-      #view_block(:class="preview_width", v-if="!isHidden(preview_width)", @scroll="onViewScroll")
-        view-container(@scroll="onViewScroll", :isHidden="isHidden(preview_width)", :source="code")
+        .editor-config.px-2
+          span.mr-auto Line {{ current_line }}, Column {{ current_column }} -- {{ lines_count }} Lines
+          i.fa.fa-check.fa-fw
+          i.fa.fa-sun-o.fa-fw
+          indent-switcher(v-model="indentMode")
+          key-binding(v-model="keyMode")
+          i.fa.fa-wrench.fa-fw
+          span Length: {{ chars_count }}
+      .preview-wrapper(v-if="viewMode !== 'edit'")
+        preview(@scroll.native="onPreviewScroll", :source="code", :mode="viewMode", ref="preview")
 
 </template>
 
 <script>
-  import ViewSwitcher from '~/components/ViewSwitcher'
-  import IndentSwitcher from '~/components/IndentSwitcher'
-  import KeyBinding from '~/components/KeyBinding'
-  import ViewContainer from '~/components/ViewContainer'
+  import Vue from 'vue'
+  import ViewSwitcher from '~/components/Editor/ViewSwitcher'
+  import IndentSwitcher from '~/components/Editor/IndentSwitcher'
+  import KeyBinding from '~/components/Editor/KeyBinding'
+  import Preview from '~/components/Editor/Preview'
   import debugModule from 'debug'
   import config from '~/config.json'
   import UniSocket from '~/plugins/UniSocket.js'
@@ -79,18 +75,18 @@
 
   export default {
     components: {
-      ViewSwitcher, IndentSwitcher, KeyBinding, ViewContainer
+      ViewSwitcher, IndentSwitcher, KeyBinding, Preview
     },
     mounted () {
-      this.connectSocket()
+      Vue.nextTick(() => this.connectSocket())
     },
     methods: {
       onEditorScroll (e) {
-        if (e.doc && this.$el.querySelector('#view_block')) {
-          this.$el.querySelector('#view_block').scrollTop = e.doc.scrollTop
+        if (e.doc && this.$refs.preview) {
+          this.$refs.preview.$el.scrollTop = e.doc.scrollTop
         }
       },
-      onViewScroll (e) {
+      onPreviewScroll (e) {
         window.CodeMirror.scrollTop = e.target.scrollTop
         this.$refs.textEditor.editor.scrollTo(null, e.target.scrollTop)
       },
@@ -143,6 +139,7 @@
         let that = this
 
         this.socket = new UniSocket(config.websocket.endPoint)
+        // console.log(this.socket)
         this.socket.on('open', () => {
           that.getNote(that.noteId)
         })
@@ -191,15 +188,6 @@
       }
     },
     computed: {
-      text_width () {
-        if (this.viewMode === 'edit') {
-          return 'full_width'
-        } else if (this.viewMode === 'preview') {
-          return 'half_width'
-        } else {
-          return 'hidden'
-        }
-      },
       editorOptions () {
         return {
           tabSize: this.indentMode.spaces,
@@ -207,15 +195,6 @@
           mode: 'text/x-markdown',
           theme: 'monokai',
           keyMap: this.keyMode // TODO: it still got some bug when it change key map mode
-        }
-      },
-      preview_width () {
-        if (this.viewMode === 'view') {
-          return 'full_width'
-        } else if (this.viewMode === 'preview') {
-          return 'half_width'
-        } else {
-          return 'hidden'
         }
       },
       chars_count () {
@@ -230,7 +209,7 @@
         note: '',
         noteId: 1,
         socket: null,
-        viewMode: 'edit',
+        viewMode: 'both',
         keyMode: 'default',
         indentMode: {
           useTab: false,
@@ -248,84 +227,161 @@
   }
 </script>
 
-<style lang="scss">
-  .layout{
-    position: relative;
-  }
-  .layout-header{
-    background-color: white;
-    padding: 10px 0;
-    border: 1px solid #d3e0e9;
-      .upload-image {
-        display: inline-block;
-      }
-
-      .setting-items{
-        float: right;
-        margin-right: 15px;
-      }
-
-      .ivu-btn{
-        font-size: 14px;
-        i.ivu-icon{
-          font-size: 18px;
-        }
-      }
-  }
-
-  .layout-workspace{
+<style lang="scss" scoped>
+  .wrapper, main, .editor-config {
     display: flex;
+    flex: 1 1 0;
+  }
 
-    #view_block{
-      height: calc(100vh - 59px - 2px - 32px);
-      overflow: scroll;
+  .wrapper {
+    height: 100vh;
+    flex-direction: column;
+
+    nav {
+      flex: 0 0 60px;
+
+      span.badge {
+        font-size: 1rem;
+      }
     }
 
-    .code-editor{
-      background-color: #9ea7b4;
-    }
-
-    .config-bar{
-      background-color: #222;
-      color: white;
-      font-size: 8px;
-      border: 1px solid #666;
-      width: 100%;
-
-      .cursor-info{
-          padding: 6px;
+    main {
+      .editor-wrapper, .preview-wrapper {
+        width: 50%;
       }
 
-      .config-items{
-        float: right;
-        margin-right: 15px;
-        display: flex;
+      .editor-wrapper {
+        position: relative;
 
-        .config-item {
-          border-left: 1px solid #666;
-          button{
-            color: white;
-          }
-          &.padding-6{
-            padding:6px;
-          }
+        .editor {
+          height: 100%;
+        }
+
+        .editor-config {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 30px;
+          z-index: 100;
+          align-items: center;
+          color: white;
+          font-size: .8rem;
+          background-color: #222;
+          border: 1px solid #666;
         }
       }
+
+      .preview-wrapper, .view-container {
+        margin: 0 auto;
+      }
     }
   }
+</style>
 
+<style lang="scss">
   .CodeMirror {
-    height: calc(100vh - 59px - 2px - 32px);
-    background-color: #444;
-    color: white;
+    height: 100%;
+
+    .CodeMirror-scroll {
+      margin-right: 0 !important;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
   }
-  .full_width {
-    width: 100vw;
-  }
-  .half_width {
-    width: 50vw;
-  }
-  .hidden {
-    width: 0vw;
-  }
+</style>
+
+<style lang="scss">
+  // .layout {
+
+  // }
+  // .navbar-fix {
+  //   flex: 0 0 72px;
+  // }
+  // .config-bar-fix {
+  //   flex: 0 0 30px;
+  // }
+  // .layout{
+  //   position: relative;
+  // }
+  // .layout-header{
+  //   background-color: white;
+  //   padding: 10px 0;
+  //   border: 1px solid #d3e0e9;
+  //     .upload-image {
+  //       display: inline-block;
+  //     }
+
+  //     .setting-items{
+  //       float: right;
+  //       margin-right: 15px;
+  //     }
+
+  //     .ivu-btn{
+  //       font-size: 14px;
+  //       i.ivu-icon{
+  //         font-size: 18px;
+  //       }
+  //     }
+  // }
+
+  // .layout-workspace{
+  //   display: flex;
+
+  //   #view-block{
+  //     height: calc(100vh - 59px - 2px - 32px);
+  //     overflow: scroll;
+  //   }
+
+  //   .code-editor{
+  //     background-color: #9ea7b4;
+  //   }
+
+  //   .config-bar{
+  //     background-color: #222;
+  //     color: white;
+  //     font-size: 8px;
+  //     border: 1px solid #666;
+  //     width: 100%;
+
+  //     .cursor-info{
+  //         padding: 6px;
+  //     }
+
+  //     .config-items{
+  //       float: right;
+  //       margin-right: 15px;
+  //       display: flex;
+
+  //       .config-item {
+  //         border-left: 1px solid #666;
+  //         button{
+  //           color: white;
+  //         }
+  //         &.padding-6{
+  //           padding:6px;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+
+  // .CodeMirror {
+  //   height: calc(100vh - 59px - 2px - 32px);
+  //   background-color: #444;
+  //   color: white;
+  // }
+  // .full_width {
+  //   width: 100vw;
+  // }
+  // .half_width {
+  //   width: 50vw;
+  // }
+  // .hidden {
+  //   width: 0vw;
+  // }
+  // .CodeMirror {
+  //   width: 100%;
+  //   height: 100%;
+  // }
 </style>

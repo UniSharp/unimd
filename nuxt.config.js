@@ -19,8 +19,12 @@ module.exports = {
   ** Css
   */
   css: [
-    'iview/dist/styles/iview.css',
     'highlight.js/styles/googlecode.css'
+  ],
+  mode: 'spa',
+  modules: [
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/font-awesome'
   ],
   /*
   ** Customize the progress-bar color
@@ -31,6 +35,7 @@ module.exports = {
   */
   build: {
     vendor: [
+      'babel-polyfill',
       'jquery',
       'flowchart.js'
     ],
@@ -57,7 +62,6 @@ module.exports = {
     }
   },
   plugins: [
-    { src: '~/plugins/VueCodemirror', ssr: false },
-    { src: '~/plugins/Iview', ssr: false }
+    { src: '~/plugins/VueCodemirror', ssr: false }
   ]
 }

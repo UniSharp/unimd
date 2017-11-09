@@ -1,6 +1,6 @@
 <template lang="pug">
-  .view-container
-    .markdown-toc(v-html="tocHtml", v-if="!isHidden")
+  .preview
+    .markdown-toc(:class="mode", v-html="tocHtml")
     .markdown-html(v-html="compiledMarkdown")
 </template>
 
@@ -27,7 +27,7 @@
     .use(markdownItFlowChart)
 
   export default {
-    props: ['source', 'isHidden'],
+    props: ['source', 'mode'],
     data () {
       return {
         tocHtml: ''
@@ -47,15 +47,44 @@
 </script>
 
 <style lang="scss" scoped>
-  .view-container{
-    .markdown-toc{
+  .preview {
+    .markdown-toc {
+      display: none;
+    }
+
+    .markdown-toc.preview {
+      display: block;
       position: fixed;
       right: 0;
       padding: 20px;
       background-color: white;
     }
-    .markdown-html{
+
+    .markdown-html {
       padding: 15px;
+    }
+  }
+</style>
+
+<style lang="scss">
+  .preview {
+    height: 100%;
+    overflow: auto;
+
+    .markdown-html {
+      width: 800px;
+      margin: auto;
+      padding: 0 1rem;
+
+      pre {
+        padding: .5rem;
+        border-radius: 3px;
+        background: #f7f7f7;
+
+        .hljs {
+          background: transparent !important;
+        }
+      }
     }
   }
 </style>

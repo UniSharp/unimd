@@ -1,6 +1,7 @@
 <template lang="pug">
-  Button-group
-    Button(v-for="mode in modes", :key="mode.name", type="ghost", :icon="mode.icon", @click="switchView(mode.name)", size="large")
+  .btn-group
+    button.btn.btn-outline-secondary(type="button", v-for="mode in modes", :key="mode.name", @click="switchView(mode.name)")
+      i.fa(:class="mode.icon")
 </template>
 
 <script>
@@ -12,16 +13,16 @@
       return {
         modes: [
           {
-            name: 'view',
-            icon: 'eye'
+            name: 'preview',
+            icon: 'fa-eye'
           },
           {
-            name: 'preview',
-            icon: 'ios-book-outline'
+            name: 'both',
+            icon: 'fa-columns'
           },
           {
             name: 'edit',
-            icon: 'edit'
+            icon: 'fa-pencil'
           }
         ]
       }
