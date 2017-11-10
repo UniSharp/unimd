@@ -4,7 +4,7 @@ const wrap = render =>
       const flowchart = require('flowchart.js')
       let token = tokens[index]
       let diagram = null
-      console.log(token)
+      // console.log(token)
       switch (token.info) {
         case 'flow':
         case 'flowchart':

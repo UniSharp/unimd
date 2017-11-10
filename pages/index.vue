@@ -3,14 +3,14 @@
     <div>
       <logo/>
       <h1 class="title">
-        unimd
+        UniMD
       </h1>
       <h2 class="subtitle">
-        A online Markdown Editor (work in progress)
+        An online Markdown Editor (in develop)
       </h2>
       <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
+        <nuxt-link to="/editor" class="button--green">Editor</nuxt-link>
+        <a href="https://github.com/UniSharp/unimd" target="_blank" class="button--grey">GitHub</a>
       </div>
     </div>
   </section>

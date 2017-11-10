@@ -19,7 +19,8 @@ module.exports = {
   ** Css
   */
   css: [
-    'highlight.js/styles/googlecode.css'
+    'highlight.js/styles/github-gist.css',
+    'github-markdown-css/github-markdown.css'
   ],
   mode: 'spa',
   modules: [

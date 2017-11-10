@@ -1,7 +1,7 @@
 <template lang="pug">
   .preview
     .markdown-toc(:class="mode", v-html="tocHtml")
-    .markdown-html(v-html="compiledMarkdown")
+    .markdown-html.markdown-body(v-html="compiledMarkdown")
 </template>
 
 <script>
@@ -12,7 +12,8 @@
   let md = markdownModule({
     html: true,
     linkify: true,
-    typographer: true
+    typographer: true,
+    breaks: true
   })
 
   // sequence.Diagram()
@@ -32,6 +33,9 @@
       return {
         tocHtml: ''
       }
+    },
+    methods: {
+      //
     },
     computed: {
       compiledMarkdown () {

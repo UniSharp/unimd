@@ -177,9 +177,6 @@
       changeSend (diff) {
         this.socket.emit('changeNote', { message: diff })
       },
-      isHidden (width) {
-        return width === 'hidden'
-      },
       updateTextArea (message) {
         let doc = this.$refs.textEditor.editor.getDoc()
         let patch = this.patchFromText(message)
@@ -289,99 +286,4 @@
       padding-bottom: 0 !important;
     }
   }
-</style>
-
-<style lang="scss">
-  // .layout {
-
-  // }
-  // .navbar-fix {
-  //   flex: 0 0 72px;
-  // }
-  // .config-bar-fix {
-  //   flex: 0 0 30px;
-  // }
-  // .layout{
-  //   position: relative;
-  // }
-  // .layout-header{
-  //   background-color: white;
-  //   padding: 10px 0;
-  //   border: 1px solid #d3e0e9;
-  //     .upload-image {
-  //       display: inline-block;
-  //     }
-
-  //     .setting-items{
-  //       float: right;
-  //       margin-right: 15px;
-  //     }
-
-  //     .ivu-btn{
-  //       font-size: 14px;
-  //       i.ivu-icon{
-  //         font-size: 18px;
-  //       }
-  //     }
-  // }
-
-  // .layout-workspace{
-  //   display: flex;
-
-  //   #view-block{
-  //     height: calc(100vh - 59px - 2px - 32px);
-  //     overflow: scroll;
-  //   }
-
-  //   .code-editor{
-  //     background-color: #9ea7b4;
-  //   }
-
-  //   .config-bar{
-  //     background-color: #222;
-  //     color: white;
-  //     font-size: 8px;
-  //     border: 1px solid #666;
-  //     width: 100%;
-
-  //     .cursor-info{
-  //         padding: 6px;
-  //     }
-
-  //     .config-items{
-  //       float: right;
-  //       margin-right: 15px;
-  //       display: flex;
-
-  //       .config-item {
-  //         border-left: 1px solid #666;
-  //         button{
-  //           color: white;
-  //         }
-  //         &.padding-6{
-  //           padding:6px;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  // .CodeMirror {
-  //   height: calc(100vh - 59px - 2px - 32px);
-  //   background-color: #444;
-  //   color: white;
-  // }
-  // .full_width {
-  //   width: 100vw;
-  // }
-  // .half_width {
-  //   width: 50vw;
-  // }
-  // .hidden {
-  //   width: 0vw;
-  // }
-  // .CodeMirror {
-  //   width: 100%;
-  //   height: 100%;
-  // }
 </style>
